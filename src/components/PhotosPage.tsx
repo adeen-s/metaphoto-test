@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getPhotos, PhotosQueryParams } from '../services/api';
-import { EnrichedPhoto } from '../api/types';
+import { EnrichedPhoto } from '../types';
 import { FilterForm } from './FilterForm';
 import { PhotoGrid } from './PhotoGrid';
 import { Pagination } from './Pagination';

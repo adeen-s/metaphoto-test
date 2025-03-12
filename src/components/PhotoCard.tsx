@@ -1,4 +1,4 @@
-import { EnrichedPhoto } from '../api/types';
+import { EnrichedPhoto } from '../types';
 
 interface PhotoCardProps {
   photo: EnrichedPhoto;

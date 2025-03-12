@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { User, Album, Photo, EnrichedPhoto, QueryParams } from './types';
+import { User, Album, Photo, EnrichedPhoto, QueryParams } from '../types';
 
 const API_BASE_URL = 'https://jsonplaceholder.typicode.com';
 

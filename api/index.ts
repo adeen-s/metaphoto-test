@@ -1,15 +1,18 @@
-import express from 'express';
+import { VercelRequest, VercelResponse } from '@vercel/node';
+import express, { Request, Response } from 'express';
 import cors from 'cors';
-import { getEnrichedPhoto, getEnrichedPhotos } from './service';
-import { QueryParams } from './types';
+import { getEnrichedPhoto, getEnrichedPhotos } from './service.js';
+import { QueryParams } from './types.js';
 
+// Create Express app
 const app = express();
-const PORT = process.env.PORT || 3001;
 
+// Enable CORS for all routes
 app.use(cors());
 app.use(express.json());
 
-app.get('/externalapi/photos/:id', async function(req, res) {
+// Get a single photo with enriched data
+app.get('/externalapi/photos/:id', async (req: Request, res: Response) => {
   try {
     const photoId = parseInt(req.params.id);
     if (isNaN(photoId)) {
@@ -24,7 +27,8 @@ app.get('/externalapi/photos/:id', async function(req, res) {
   }
 });
 
-app.get('/externalapi/photos', async function(req, res) {
+// Get photos with filtering and pagination
+app.get('/externalapi/photos', async (req: Request, res: Response) => {
   try {
     const queryParams: QueryParams = {
       title: req.query.title as string | undefined,
@@ -42,10 +46,14 @@ app.get('/externalapi/photos', async function(req, res) {
   }
 });
 
-if (process.env.NODE_ENV !== 'test') {
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-  });
-}
+// Health check endpoint
+app.get('/externalapi/health', (_req: Request, res: Response) => {
+  res.json({ status: 'ok', message: 'API is running' });
+});
 
-export default app; 
+// Export the Express API as the default function
+export default function handler(req: VercelRequest, res: VercelResponse) {
+  // This is necessary because Vercel's serverless functions don't support
+  // the standard Express app.listen() pattern
+  return app(req, res);
+} 

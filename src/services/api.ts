@@ -1,7 +1,10 @@
 import axios from 'axios';
-import { EnrichedPhoto } from '../api/types';
+import { EnrichedPhoto } from '../types';
 
-const API_BASE_URL = 'http://localhost:3001/externalapi';
+// Determine the API base URL based on the environment
+const API_BASE_URL = import.meta.env.PROD 
+  ? '/externalapi' // In production, use relative path for Vercel
+  : 'http://localhost:3001/externalapi'; // In development, use localhost
 
 export interface PhotosQueryParams {
   title?: string;
